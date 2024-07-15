@@ -1,10 +1,12 @@
 import { Alert, Button, Platform, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import CustomText from '../components/CustomText';
 import { theme } from '../constants/theme';
 import { object, string, number, date, InferType } from 'yup';
 import { Formik } from 'formik';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../constants/firebaseConfig';
 
 const color = theme.colors.primaryColor
 let userSchema = object({
@@ -13,15 +15,27 @@ let userSchema = object({
 });
 const Login = () => {
     const navigation = useNavigation();
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+    // const [email, setEmail] = useState();
+    // const [password, setPassword] = useState();
+
+    
+
+    const handleLogin = async(email,password) =>{
+        try {
+            await signInWithEmailAndPassword(auth,email,password)
+            Alert.alert('Success','logged in successfully');   
+        } catch (error) {
+            Alert.alert('Error',error.message)
+        }
+        
+    }
     return (
 
         <SafeAreaView style={[styles.AndroidSafeArea, styles.container]}>
             <Text style={{ color, fontSize: 40, fontWeight: 'bold', paddingBottom: '7%' }}>Task Manager</Text>
             <Formik
                 initialValues={{ email: '', password: '' }}
-                onSubmit={values => console.log(values)}
+                onSubmit={values => handleLogin(values.email,values.password)}
                 validationSchema={userSchema}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, isValid, touched }) => (

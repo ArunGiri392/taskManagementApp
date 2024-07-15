@@ -1,12 +1,17 @@
-import { Platform, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Platform, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import CustomText from '../components/CustomText'
 import { theme } from '../constants/theme'
 import { useNavigation } from '@react-navigation/native'
 import { Formik } from 'formik';
 import { object, string, number, date, InferType, ref } from 'yup';
+import { auth, db, firebase } from '../constants/firebaseConfig'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { doc, setDoc } from 'firebase/firestore'
 
+// our color theme
 const color = theme.colors.primaryColor
+// Validation schema for the form validation.
 let userSchema = object({
     name: string().required('Name is required'),
     email: string().email().required('Email is required'),
@@ -14,18 +19,36 @@ let userSchema = object({
     confirmPassword: string()
      .oneOf([ref('password'), null], 'Passwords must match')
   });
+
 const SignUp = () => {
     const navigation = useNavigation();
-    const [name,setName]=useState();
-    const [email,setEmail]=useState();
-    const [password,setPassword]=useState();
-    const [Confirmpassword,setConfirmPassword]=useState();
+    // const [name,setName]=useState();
+    // const [email,setEmail]=useState();
+    // const [password,setPassword]=useState();
+    // const [Confirmpassword,setConfirmPassword]=useState();
+
+    const handleSignUp = async(email,password,name) => {
+        try {
+         await createUserWithEmailAndPassword(auth,email,password)
+         const user = auth.currentUser;
+         console.log(user);
+         if(user){
+            setDoc(doc(db,'users',user.uid),{
+                email:email,
+                name:name,
+            })
+         }
+        } catch (error) {
+          Alert.alert('Error', error.message);
+        }
+      };
+
   return (
     <SafeAreaView style={[styles.AndroidSafeArea,styles.container]}>
             <Text style={{ color, fontSize: 35, fontWeight: 'bold', paddingBottom: '7%' }}>Create Account</Text>
             <Formik
      initialValues={{ email: '',name:'',password:'',confirmPassword:'' }}
-     onSubmit={values => console.log(values)}
+     onSubmit={values => handleSignUp(values.email,values.password,values.name)}
      validationSchema={userSchema}
    >
      {({ handleChange, handleBlur, handleSubmit, values,errors,isValid,touched }) => (
