@@ -8,6 +8,7 @@ import { object, string, number, date, InferType, ref } from 'yup';
 import { auth, db, firebase } from '../constants/firebaseConfig'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { doc, setDoc } from 'firebase/firestore'
+import LoadingOverlay from '../components/LoadingOverlay'
 
 // our color theme
 const color = theme.colors.primaryColor
@@ -22,13 +23,11 @@ let userSchema = object({
 
 const SignUp = () => {
     const navigation = useNavigation();
-    // const [name,setName]=useState();
-    // const [email,setEmail]=useState();
-    // const [password,setPassword]=useState();
-    // const [Confirmpassword,setConfirmPassword]=useState();
+    const [loading,setLoading] = useState(false);
 
     const handleSignUp = async(email,password,name) => {
         try {
+          setLoading(true);
          await createUserWithEmailAndPassword(auth,email,password)
          const user = auth.currentUser;
          console.log(user);
@@ -39,7 +38,9 @@ const SignUp = () => {
                 uid:user.uid,
             })
          }
+         setLoading(false);
         } catch (error) {
+          setLoading(false);
           Alert.alert('Error', error.message);
         }
       };
@@ -76,6 +77,7 @@ const SignUp = () => {
                 </TouchableOpacity>
 
             </View>
+            <LoadingOverlay loading={loading} message="Loading..." />
     </SafeAreaView>
   )
 }

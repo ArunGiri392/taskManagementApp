@@ -7,6 +7,7 @@ import { object, string, number, date, InferType } from 'yup';
 import { Formik } from 'formik';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../constants/firebaseConfig';
+import LoadingOverlay from '../components/LoadingOverlay';
 
 const color = theme.colors.primaryColor
 let userSchema = object({
@@ -15,16 +16,20 @@ let userSchema = object({
 });
 const Login = () => {
     const navigation = useNavigation();
+    const [loading,setLoading] = useState(false);
     // const [email, setEmail] = useState();
     // const [password, setPassword] = useState();
 
     
 
     const handleLogin = async(email,password) =>{
+        setLoading(true);
         try {
             await signInWithEmailAndPassword(auth,email,password)
             Alert.alert('Success','logged in successfully');   
+            setLoading(false);
         } catch (error) {
+            setLoading(false);
             Alert.alert('Error',error.message)
         }
         
@@ -62,6 +67,7 @@ const Login = () => {
                 </TouchableOpacity>
 
             </View>
+            <LoadingOverlay loading={loading} message="Loading..." />
         </SafeAreaView>
 
     )

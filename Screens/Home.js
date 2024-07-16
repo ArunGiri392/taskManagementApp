@@ -30,25 +30,39 @@ const Home = () => {
 
     // Call the initial Data
     useEffect(() => {
+        if (!user) {
+          return;
+        }
+    
         const fetchTasks = (userId) => {
-            try {
-                const tasksCollection = collection(db, 'tasks');
-                const q = query(tasksCollection, where('uid', '==', userId));
-                onSnapshot(q, (querySnapshot) => {
-                    const tasks = [];
-                    querySnapshot.forEach((doc) => {
-                        tasks.push({ ...doc.data(), id: doc.id });
-                    });
-                    console.log(tasks)
-                    dispatch(updateTasks(tasks))
-                }); 
-            } catch (error) {
-                Alert.alert("Error",error.message);
-            }
-            
+          try {
+            const tasksCollection = collection(db, 'tasks');
+            const q = query(tasksCollection, where('uid', '==', userId));
+    
+            const unsubscribe = onSnapshot(q, (querySnapshot) => {
+              const tasks = [];
+              querySnapshot.forEach((doc) => {
+                tasks.push({ ...doc.data(), id: doc.id });
+              });
+           // console.log(tasks);
+              dispatch(updateTasks(tasks));
+            });
+    
+            return unsubscribe; // Return the unsubscribe function to clean up the listener when necessary
+          } catch (error) {
+            Alert.alert("Error", error.message);
+          }
         };
-        fetchTasks(user.uid)
-    }, [fetchTasks]);
+    
+        const unsubscribe = fetchTasks(user.uid);
+    
+        // Cleanup the listener on component unmount
+        return () => {
+          if (unsubscribe) {
+            unsubscribe();
+          }
+        };
+      }, [user, dispatch]);
 
     // format timestamp to human readable date
     const format = (timeStamp)=>{
@@ -61,7 +75,7 @@ const items = ({item})=>(
     <View style={{ marginBottom:15,width: '90%',backgroundColor:'white', alignSelf: 'center', marginVertical: responsiveHeight(1), borderWidth: 1.5, borderColor: primaryColor, borderRadius: 15, padding: responsiveHeight(1), overflow: 'hidden' }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingBottom: responsiveHeight(1) }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Image style={[styles.profileIcon, { width: responsiveHeight(6), height: responsiveHeight(6) }]} source={{ uri: 'https://picsum.photos/200' }} />
+                            <Image style={[styles.profileIcon, { width: responsiveHeight(6), height: responsiveHeight(6) }]} source={{ uri: item.imageUrl ? item.imageUrl : 'https://picsum.photos/200' }} />
                             <View style={{ width: '70%', paddingHorizontal: responsiveWidth(2) }}>
                                 <Text style={[{ fontSize: responsiveFontSize(2), color: 'black', fontWeight: 'bold'},item.isCompleted && {textDecorationLine:'line-through'}]}>{item.title}</Text>
                                 <Text style={{ color: 'gray' }}>{format(item.createdAt)}</Text>
