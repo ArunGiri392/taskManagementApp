@@ -36,6 +36,7 @@ const SignUp = () => {
             setDoc(doc(db,'users',user.uid),{
                 email:email,
                 name:name,
+                uid:user.uid,
             })
          }
         } catch (error) {

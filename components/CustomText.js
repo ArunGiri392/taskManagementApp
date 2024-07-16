@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {theme} from '../constants/theme';
 
 const color = theme.colors.primaryColor
-const CustomText = ({ icon='email', placeholder='Email', value, onChangeText, secureTextEntry=false,keyboardType='default', onBlur }) => {
+const CustomText = ({ icon='email', placeholder='Email', value, onChangeText, secureTextEntry=false,keyboardType='default', onBlur, customStyle }) => {
     
     return (
     <View style={styles.container}>
