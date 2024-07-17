@@ -17,10 +17,6 @@ let userSchema = object({
 const Login = () => {
     const navigation = useNavigation();
     const [loading,setLoading] = useState(false);
-    // const [email, setEmail] = useState();
-    // const [password, setPassword] = useState();
-
-    
 
     const handleLogin = async(email,password) =>{
         setLoading(true);

@@ -17,6 +17,7 @@ const LeaderBoard = () => {
   const [sortByMonth, setSortByMonth] = useState([]);
   const [sortingCount, setSortingCount] = useState(0);
   const color = theme.colors.primaryColor
+  const defaultImage = theme.image.defaultImage
   // Fetch the tasks and sort them
   const fetchTasks = () => {
     setLoading(true);
@@ -137,25 +138,25 @@ const LeaderBoard = () => {
   return (
     <View style={{ flex: 1 }}>
       <View style={{ backgroundColor: color }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: theme.colors.primaryColor, paddingHorizontal: responsiveWidth(4), paddingVertical: responsiveHeight(2) }}>
+        <View style={styles.topContainer}>
           <Text style={{ fontSize: responsiveFontSize(4), color: 'white', fontWeight: 'bold' }}>Leaderboard</Text>
-          <TouchableOpacity onPress={fetchTasks} style={{ backgroundColor: 'white', padding: 8, alignItems: 'center', justifyContent: 'center', borderRadius: 10 }}>
+          <TouchableOpacity onPress={fetchTasks} style={styles.rightButton}>
             <Text>Refresh</Text>
           </TouchableOpacity>
         </View>
         <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center', padding: 15 }}>
           <Text style={{ textAlign: 'center', color: 'white', fontSize: responsiveFontSize(2) }}>Sort:</Text>
-          <TouchableOpacity onPress={() => setSortingCount(0)} style={[{ padding: 10, borderWidth: 1, borderColor: "white", borderRadius: 20 }, sortingCount === 0 ? { backgroundColor: 'white' } : { backgroundColor: color }]}>
+          <TouchableOpacity onPress={() => setSortingCount(0)} style={[styles.filterbtn, sortingCount === 0 ? { backgroundColor: 'white' } : { backgroundColor: color }]}>
             <Text style={[sortingCount === 0 ? { color } : { color: 'white' }, { fontWeight: 'bold', textAlign: 'center' }]}>  All  </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSortingCount(1)} style={[{ padding: 10, borderWidth: 1, borderColor: "white", borderRadius: 20 }, sortingCount === 1 ? { backgroundColor: 'white' } : { backgroundColor: color }]}>
-            <Text style={[sortingCount === 1 ? { color } : { color: 'white' }, { fontWeight: 'bold', textAlign: 'center' }]}>Days</Text>
+          <TouchableOpacity onPress={() => setSortingCount(1)} style={[styles.filterbtn, sortingCount === 1 ? { backgroundColor: 'white' } : { backgroundColor: color }]}>
+            <Text style={[sortingCount === 1 ? { color } : { color: 'white' }, { fontWeight: 'bold', textAlign: 'center' }]}>Day</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSortingCount(2)} style={[{ padding: 10, borderWidth: 1, borderColor: "white", borderRadius: 20 }, sortingCount === 2 ? { backgroundColor: 'white' } : { backgroundColor: color }]}>
-            <Text style={[sortingCount === 2 ? { color } : { color: 'white' }, { fontWeight: 'bold', textAlign: 'center' }]}>Weeks</Text>
+          <TouchableOpacity onPress={() => setSortingCount(2)} style={[styles.filterbtn, sortingCount === 2 ? { backgroundColor: 'white' } : { backgroundColor: color }]}>
+            <Text style={[sortingCount === 2 ? { color } : { color: 'white' }, { fontWeight: 'bold', textAlign: 'center' }]}>Week</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSortingCount(3)} style={[{ padding: 10, borderWidth: 1, borderColor: "white", borderRadius: 20 }, sortingCount === 3 ? { backgroundColor: 'white' } : { backgroundColor: color }]}>
-            <Text style={[sortingCount === 3 ? { color } : { color: 'white' }, { fontWeight: 'bold', textAlign: 'center' }]}>Months</Text>
+          <TouchableOpacity onPress={() => setSortingCount(3)} style={[styles.filterbtn, sortingCount === 3 ? { backgroundColor: 'white' } : { backgroundColor: color }]}>
+            <Text style={[sortingCount === 3 ? { color } : { color: 'white' }, { fontWeight: 'bold', textAlign: 'center' }]}>Month</Text>
           </TouchableOpacity>
 
         </View>
@@ -165,6 +166,7 @@ const LeaderBoard = () => {
           data={sortingCount === 0 ? countedTasks : sortingCount === 1 ? sortByDays : sortingCount === 2 ? sortByWeek : sortingCount === 3 ? sortByMonth : []}
           renderItem={renderItems}
           keyExtractor={(item) => item.uid}
+          contentContainerStyle={{paddingVertical:20}}
         >
 
         </FlatList>
@@ -186,4 +188,23 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     // borderColor:secondaryColor,
   },
+  topContainer:{ 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    backgroundColor: theme.colors.primaryColor, 
+    paddingHorizontal: responsiveWidth(4), 
+    paddingVertical: responsiveHeight(2) 
+  },
+  rightButton:{ backgroundColor: 'white', 
+    padding: 8, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    borderRadius: 10 
+  },
+  filterbtn:{ 
+    padding: 10, 
+    borderWidth: 1, 
+    borderColor: "white", 
+    borderRadius: 20 
+  }
 })

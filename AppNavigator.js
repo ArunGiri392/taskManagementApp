@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import { View, Text, Alert, ActivityIndicator, Platform } from 'react-native'
+import { View, Text, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -13,7 +13,7 @@ import Profile from './Screens/Profile';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch } from 'react-redux';
 import { userLogin, userLogout } from './features/userSlice';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import AddTask from './Screens/AddTask';
 const AppNavigator = () => {
     const Stack = createStackNavigator();
