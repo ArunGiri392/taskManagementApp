@@ -1,34 +1,12 @@
 {
   "expo": {
-    "name": "Task-Manager",
-    "slug": "Task-Manager",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.yaad48.TaskManager"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.yaad48.TaskManager"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
     "extra": {
       "eas": {
-        "projectId": "ad6a15a8-c64d-4025-88f2-809f99c13850"
+        "projectId": "5f22a8ed-916c-49b1-86a9-9c5d4c06e022"
       }
+    },
+    "android": {
+      "package": "com.arun.taskManager"
     }
   }
 }

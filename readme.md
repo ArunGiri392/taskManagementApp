@@ -26,9 +26,8 @@ This is a Task Management application built with React Native and Expo. The app 
 
    ```bash
    git clone https://github.com/ArunGiri392/Task-Manager.git
-   cd task-management-app
 
-2. run `npm install` in root directory
+2. run `npm install` in the project root directory
 
 3. rename `.env.sample` file to `.env`
 
