@@ -22,8 +22,10 @@ const Login = () => {
         setLoading(true);
         try {
             await signInWithEmailAndPassword(auth,email,password)
-            Alert.alert('Success','logged in successfully');   
-            setLoading(false);
+            Alert.alert('Success','logged in successfully');
+            setTimeout(()=>{
+                setLoading(false);
+            },3000)  
         } catch (error) {
             setLoading(false);
             Alert.alert('Error',error.message)

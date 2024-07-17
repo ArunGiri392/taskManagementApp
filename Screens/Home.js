@@ -93,7 +93,7 @@ const Home = () => {
                     </View>
                 </View>
                 <View>
-                    <BouncyCheckbox onPress={(isChecked) => (updateTask(item.taskId, { ...item, isCompleted: isChecked }))} isChecked={item?.isCompleted} />
+                    <BouncyCheckbox onPress={(isChecked) => (updateTask(item.taskId, { ...item, isCompleted: isChecked }))} bounceEffect={1} fillColor="green" isChecked={item?.isCompleted} />
                 </View>
 
             </View>
@@ -140,12 +140,12 @@ const Home = () => {
                 <Text style={{ fontSize: responsiveFontSize(6), color: secondaryColor, alignSelf: 'center' }} >{`${completedTasks}/${totalTasks}`}</Text>
             </View>
 
-            <View>
+            <View style={{marginBottom:'50%'}}>
                 <FlatList
                     data={tasks}
                     keyExtractor={(item) => item.taskId}
                     renderItem={items}
-                    contentContainerStyle={{ paddingVertical: 20, paddingBottom: '12%' }}
+                    contentContainerStyle={{ paddingVertical: 20, paddingBottom: '20%' }}
                 >
 
                 </FlatList>

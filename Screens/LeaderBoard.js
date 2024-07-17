@@ -58,7 +58,7 @@ const LeaderBoard = () => {
         unsubscribe();
       }
     };
-  }, [sortingCount]);
+  }, []);
 
   // Get completed tasks count for each user
   const completedCount = (tasks, setItems) => {
