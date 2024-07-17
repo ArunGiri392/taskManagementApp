@@ -1,5 +1,5 @@
 import { Alert, Button, FlatList, Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { theme } from '../constants/theme'
 import {
     responsiveHeight,
@@ -23,6 +23,7 @@ const secondaryColor = theme.colors.secondaryColor
 const defaultImage = theme.image.defaultImage
 
 const Home = () => {
+    // Selectors
     const user = useSelector(state => state.user.userDetails);
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
     const navigation = useNavigation();
@@ -30,6 +31,9 @@ const Home = () => {
     const tasks = useSelector(state => state.task.tasks);
     const completedTasks = tasks.filter(task => task.isCompleted).length;
     const totalTasks = tasks.length;
+    // States
+    const [refresh,setRefresh] = useState(true) ;
+
 
     // Call the initial Data
     useEffect(() => {
@@ -47,7 +51,6 @@ const Home = () => {
                     querySnapshot.forEach((doc) => {
                         tasks.push({ ...doc.data(), id: doc.id });
                     });
-                    // console.log(tasks);
                     dispatch(updateTasks(tasks));
                 });
     return unsubscribe; // Return the unsubscribe function to clean up the listener when necessary
@@ -64,7 +67,7 @@ const Home = () => {
                 unsubscribe();
             }
         };
-    }, [user, dispatch]);
+    }, [user, dispatch, refresh]);
 
     // handle notification scheduling  
     useEffect(() => {
@@ -124,11 +127,15 @@ const Home = () => {
                             <Text style={{ color: secondaryColor, fontSize: responsiveFontSize(2.2), fontWeight: 'bold' }}>{isLoggedIn ? user.name : 'Loading...'}</Text>
                         </View>
                     </View>
+                    <View style={{flexDirection:'row'}}>
                     <TouchableOpacity onPress={() => navigation.navigate('AddTask', { edit: false, item: null })} style={{ backgroundColor: 'rgba(255,255,255,0.4)', marginHorizontal: responsiveWidth(3), borderRadius: 8 }}>
                         <MaterialIcon name='add' size={responsiveFontSize(5)} color={secondaryColor} />
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setRefresh(!refresh)} style={{ backgroundColor: 'rgba(255,255,255,0.4)', marginHorizontal: responsiveWidth(3), borderRadius: 8 }}>
+                        <MaterialIcon name='refresh' size={responsiveFontSize(5)} color={secondaryColor} />
+                    </TouchableOpacity>
+                    </View>
                 </View>
-
                 <Text style={{ fontSize: responsiveFontSize(5), color: secondaryColor, alignSelf: 'center', marginTop: responsiveHeight(2), fontWeight: 'bold' }}>Tasks</Text>
                 <Text style={{ fontSize: responsiveFontSize(6), color: secondaryColor, alignSelf: 'center' }} >{`${completedTasks}/${totalTasks}`}</Text>
             </View>

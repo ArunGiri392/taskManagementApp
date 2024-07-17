@@ -16,7 +16,6 @@ export const getNextNotificationTime = () => {
   
     // Calculate the difference in seconds
     const diffInSeconds = Math.floor((nextNotification - now) / 1000);
-    console.log(diffInSeconds);
     return diffInSeconds > 0 ? diffInSeconds : 0;
   };
 
@@ -54,7 +53,7 @@ export const scheduleDailyNotification = async () => {
             body: 'Don’t forget to complete your tasks for today!',
         },
         trigger: {
-            seconds: 5,
+            seconds: delayInSeconds,
         },
     });
     await AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify({ scheduled: true }));

@@ -1,4 +1,4 @@
-import { Button, Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { Button, Image, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native'
 import React from 'react'
 import { auth } from '../constants/firebaseConfig';
 import { signOut } from 'firebase/auth';
@@ -16,10 +16,10 @@ const Profile = () => {
   const signOutUser = async () => {
     try {
       await signOut(auth);
-      console.log('User signed out successfully');
+      Alert.alert("Signout",'User signed out successfully');
       // Perform any additional actions like navigating to the login screen
     } catch (error) {
-      console.error('Error signing out: ', error);
+      Alert.alert("Error", error.messge);
     }
   };
 

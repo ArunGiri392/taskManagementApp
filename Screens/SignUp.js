@@ -30,7 +30,6 @@ const SignUp = () => {
           setLoading(true);
          await createUserWithEmailAndPassword(auth,email,password)
          const user = auth.currentUser;
-         console.log(user);
          if(user){
             setDoc(doc(db,'users',user.uid),{
                 email:email,

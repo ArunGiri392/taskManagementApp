@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import { View, Text, ActivityIndicator } from 'react-native'
+import { View, Text, ActivityIndicator, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -34,10 +34,10 @@ const AppNavigator = () => {
                         setUser(data);
                         setLoading(false);
                     } else {
-                        console.log("No such document!");
+                        Alert.alert("Error",'User not found on the server');
                     }
                 } catch (error) {
-                    console.error("Error fetching document:", error);
+                    Alert.alert("Error",error.message);
                 }
             } else {
                 setUser(null);

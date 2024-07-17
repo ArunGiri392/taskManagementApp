@@ -1,9 +1,9 @@
+import { Alert } from 'react-native';
 import { doc, updateDoc, deleteDoc, setDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
 import { db } from '../constants/firebaseConfig';
 import { uuidv7 } from 'uuidv7';
 import { useDispatch } from 'react-redux';
 import { updateTasks } from './taskSlice';
-import { Alert } from 'react-native';
 
 
 export const updateTask = async (taskId, updatedTask) => {
@@ -26,7 +26,6 @@ export const deleteTask = async (taskId) => {
     const taskDoc = doc(db, 'tasks', taskId);
     try {
         await deleteDoc(taskDoc);
-        console.log('Task deleted successfully');
     } catch (error) {
         Alert.alert("Error",'Error while deleting task, please try later.')
     }
@@ -41,7 +40,7 @@ export const addTask = async (userId, task) => {
         return true;
 
     } catch (e) {
-        console.error("Error adding document: ", e);
+        Alert.alert("Error adding document: ", e.message);
         return false;
     }
 }
@@ -59,7 +58,7 @@ export const fetchTasks = async (userId) => {
                 resolve(tasks);
             });
         } catch (error) {
-            console.log(error.message);
+            Alert.alert("Error", error.message);
             reject(null);
         }
     }

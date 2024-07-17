@@ -4,7 +4,7 @@ import AppNavigator from './AppNavigator';
 import { store } from './store';
 import { Provider } from 'react-redux';
 
-export default function App() {
+const App:React.FC =()=> {
   return (
     <Provider store={store} >
       <AppNavigator />
@@ -12,6 +12,7 @@ export default function App() {
   );
 }
 
+export default App ;
 const styles = StyleSheet.create({
   container: {
     flex: 1,

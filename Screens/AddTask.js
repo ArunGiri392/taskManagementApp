@@ -23,7 +23,6 @@ let userSchema = object({
 });
 const AddTask = ({ route }) => {
   const { edit, item } = route.params;
-  console.log(edit, item);
   const user = useSelector(state => state.user.userDetails)
   const uid = user.uid
   const [loading, setLoading] = useState(false);
@@ -40,12 +39,10 @@ const AddTask = ({ route }) => {
       setLoading(false);
       Alert.alert("Success", 'Task Added Succesfully.')
       navigation.goBack();
-
-      console.log("Document written with ID: ");
-    } catch (e) {
+    }
+      catch (e) {
       setLoading(false);
       Alert.alert("Error", e.message);
-      console.error("Error adding document: ", e);
     }
   }
 
@@ -73,8 +70,6 @@ const AddTask = ({ route }) => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       setImage(result.assets[0].uri);
       uploadImage(result.assets[0].uri)
@@ -93,7 +88,6 @@ const AddTask = ({ route }) => {
       const downloadURL = await getDownloadURL(storageRef);
       setLoading(false);
       setImage(downloadURL);
-      console.log(downloadURL)
       // Alert.alert('Upload successful!', `Image URL: ${downloadURL}`);
     } catch (error) {
       setLoading(false);

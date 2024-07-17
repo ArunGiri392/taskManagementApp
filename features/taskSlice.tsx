@@ -1,6 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice,PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+interface TaskState {
+    tasks: Array<any>;
+  }
+
+const initialState: TaskState = {
  tasks: []
 }
 
