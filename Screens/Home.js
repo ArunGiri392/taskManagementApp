@@ -14,12 +14,10 @@ import { db } from '../constants/firebaseConfig';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { deleteTask, updateTask } from '../features/crud';
 import { updateTasks } from '../features/taskSlice';
-// import { checkAndScheduleNotification, requestPermissions } from '../features/NotificationHandler';
-import * as Notifications from 'expo-notifications';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getNextNotificationTime } from '../features/NotificationHandler';
 
-// Imports the theme colors
+import { checkAndScheduleNotification, requestPermissions } from '../features/NotificationHandler';
+
+// Imports the theme colors and default Image
 const primaryColor = theme.colors.primaryColor
 const secondaryColor = theme.colors.secondaryColor
 const defaultImage = theme.image.defaultImage
@@ -39,7 +37,7 @@ const Home = () => {
             return;
         }
 
-        const fetchTasks = (userId) => {
+    const fetchTasks = (userId) => {
             try {
                 const tasksCollection = collection(db, 'tasks');
                 const q = query(tasksCollection, where('uid', '==', userId));
@@ -52,8 +50,7 @@ const Home = () => {
                     // console.log(tasks);
                     dispatch(updateTasks(tasks));
                 });
-
-                return unsubscribe; // Return the unsubscribe function to clean up the listener when necessary
+    return unsubscribe; // Return the unsubscribe function to clean up the listener when necessary
             } catch (error) {
                 Alert.alert("Error", error.message);
             }
@@ -69,49 +66,11 @@ const Home = () => {
         };
     }, [user, dispatch]);
 
-    const NOTIFICATION_KEY = 'TASK_NOTIFICATION_KEY';
     // handle notification scheduling  
     useEffect(() => {
-        const requestPermissions = async () => {
-            const { status } = await Notifications.getPermissionsAsync();
-            if (status !== 'granted') {
-                await Notifications.requestPermissionsAsync();
-            }
-        };
-
-        const checkAndScheduleNotification = async () => {
-            const notificationData = await AsyncStorage.getItem(NOTIFICATION_KEY);
-            if (!notificationData) {
-                await scheduleDailyNotification();
-            } else {
-                const notifications = await Notifications.getAllScheduledNotificationsAsync();
-                if (notifications.length === 0) {
-                    await scheduleDailyNotification();
-                }
-            }
-        };
-        const delayInSeconds = getNextNotificationTime();
-        const scheduleDailyNotification = async () => {
-            await Notifications.cancelAllScheduledNotificationsAsync();
-            await Notifications.scheduleNotificationAsync({
-                content: {
-                    title: 'Complete your tasks!',
-                    body: 'Don’t forget to complete your tasks for today!',
-                },
-                trigger: {
-                    seconds: delayInSeconds,
-                },
-            });
-            await AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify({ scheduled: true }));
-        };
-
         requestPermissions();
-        scheduleDailyNotification();
         checkAndScheduleNotification();
     }, []);
-
-
-
 
     // format timestamp to human readable date
     const format = (timeStamp) => {

@@ -6,6 +6,8 @@ import { collection, query, orderBy, onSnapshot, where, count } from 'firebase/f
 import { db } from '../constants/firebaseConfig';
 import { FlatList } from 'react-native-gesture-handler';
 import LoadingOverlay from '../components/LoadingOverlay';
+
+// Pass this data to tasks for manual testing and change it accordingly
 import { testData } from '../constants/testData';
 
 const LeaderBoard = () => {
@@ -18,14 +20,14 @@ const LeaderBoard = () => {
   const [sortingCount, setSortingCount] = useState(0);
   const color = theme.colors.primaryColor
   const defaultImage = theme.image.defaultImage
+
+  
   // Fetch the tasks and sort them
   const fetchTasks = () => {
     setLoading(true);
     try {
-      // console.log('trying');
       const tasksCollection = collection(db, 'tasks');
       const q = query(tasksCollection, where('isCompleted', '==', true));
-      // console.log('collection');
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const tasksArr = [];
         querySnapshot.forEach((doc) => {
@@ -48,7 +50,6 @@ const LeaderBoard = () => {
 
 
   useEffect(() => {
-
     const unsubscribe = fetchTasks();
     // Clean up the listener on unmount
     sortByPeriods();
@@ -121,6 +122,8 @@ const LeaderBoard = () => {
 
 
   }
+  
+  // function for rendering item in flatlist for tasks
   const renderItems = ({ item, index }) => (
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: color, paddingVertical: responsiveHeight(1), width: '90%', alignSelf: "center", borderRadius: 12, margin: 4 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -173,7 +176,6 @@ const LeaderBoard = () => {
 
         <LoadingOverlay loading={loading} message="Loading..." />
       </View>
-      {/* <Button title='get date ' onPress={sortByPeriods} /> */}
     </View>
   )
 }

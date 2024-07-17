@@ -13,7 +13,6 @@ const secondaryColor = theme.colors.secondaryColor;
 const primaryColor = theme.colors.primaryColor;
 const Profile = () => {
   const user = useSelector(state=>state.user.userDetails);
-  console.log(user)
   const signOutUser = async () => {
     try {
       await signOut(auth);
