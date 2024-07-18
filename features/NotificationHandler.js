@@ -7,7 +7,7 @@ export const getNextNotificationTime = () => {
     const nextNotification = new Date();
   
     // Set the notification time to 10 AM
-    nextNotification.setHours(20, 59, 0, 0);
+    nextNotification.setHours(10, 48, 0, 0);
   
     // If it's already past 10 AM today, set it for tomorrow
     if (now > nextNotification) {

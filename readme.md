@@ -39,5 +39,6 @@ This is a Task Management application built with React Native and Expo. The app 
 
 7. Alternatively install `expo go` app on your android or ios device and connect with the same network then scan the QR code in the terminal provided by metro bundler.
 
-## Demo
+
+
 
